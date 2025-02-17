@@ -9,7 +9,7 @@ export const useLoginStore = defineStore("Login", {
     error: null,
     loading: false,
     isAuthenticated: false,
-    token: localStorage.getItem('authToken') || null, // Retrieve token from localStorage
+    token: localStorage.getItem('Bearer') || null, // Retrieve token from localStorage
   }),
 
   actions: {
@@ -43,9 +43,10 @@ export const useLoginStore = defineStore("Login", {
         console.log("Received Token:", this.token);
 
         // 🔹 Step 2: Use Token to Login
-        const apiURL = `${companyStore.fullURL}/Login`;
+        const apiURL = `${companyStore.fullURL}/Login?Login=${this.username}&Password=${this.password}&Clientcode=${companyStore.companyCode}&Application=${companyStore.application}`;
 
         console.log("Logging in with Token:", apiURL);
+        console.log("Origin Url is:" + "http://appdemo.intelliob.com/webapi/api/Login?Login=5000&Password=1MqM5jFel6OUVDeOiSBIQA%3D%3D&Clientcode=305&Application=1");
 
         const cookies = document.cookie;
         const loginResponse = await axios.get(apiURL, {

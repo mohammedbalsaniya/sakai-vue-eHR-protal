@@ -12,7 +12,7 @@ export const useCompanyStore = defineStore('company', {
     companyDetails: null,      // Store additional company details like DNS, SSL, etc.
     sslStatus: null,           // Store SSL status (1 or 0)
     protocol: 'http',          // Single variable to store http/https
-    baseURL: 'appdemo.intelliob.com/webapi/api',  // Store base URL
+    baseURL: '',  // Store base URL
     fullURL: '',                // Dynamically updated full URL
     application: ''
   }),
@@ -40,14 +40,16 @@ export const useCompanyStore = defineStore('company', {
           this.companyName = companyData.CompanyName || 'Company Name Not Found';
           this.companyDetails = companyData;
           this.sslStatus = companyData.SSL; // Store SSL status (1 or 0)
+          this.baseURL = companyData.DNS
           this.application = companyData.Application; // Store Application status
           this.responseData = res.data?.MobileClientServer?.Table || null;
+
 
           // ✅ Correct way to set protocol dynamically
           this.protocol = this.sslStatus === 1 ? 'https' : 'http';
 
           // ✅ Correct way to construct the full URL
-          this.fullURL = `${this.protocol}://${this.baseURL}`;
+          this.fullURL = `${this.protocol}://${this.baseURL}/webapi/api`;
 
           console.log(`SSL is ${this.sslStatus === 1 ? 'enabled' : 'not enabled'}`);
           console.log('Protocol:', this.protocol);
