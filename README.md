@@ -27,3 +27,17 @@ npm run dev
 ```sh
 npm run build
 ```
+
+### Login details
+companyCode 
+```
+305
+```
+Login Id
+```
+5000
+```
+Password
+```
+1MqM5jFel6OUVDeOiSBIQA%3D%3D
+```
