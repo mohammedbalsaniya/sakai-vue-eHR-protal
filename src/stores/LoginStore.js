@@ -52,8 +52,8 @@ export const useLoginStore = defineStore("Login", {
         const loginResponse = await axios.get(apiURL, {
           headers: {
             Authorization: `Bearer ${this.token}`,
+            // 'Access-Control-Allow-Origin': '*',
           },
-          withCredentials: true,
         });
 
         console.log("Login response:", loginResponse.data);
