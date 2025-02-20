@@ -16,7 +16,7 @@ const routes = [
     component: CompanyPage, 
   },
   { 
-    path: '/company/dashbrod', 
+    path: '/company/dashboard', 
     name: 'DashbordView',
     component: DashbordView, 
   },
