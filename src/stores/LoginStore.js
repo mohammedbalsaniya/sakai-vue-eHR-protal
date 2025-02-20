@@ -9,7 +9,8 @@ export const useLoginStore = defineStore("Login", {
     error: null,
     loading: false,
     isAuthenticated: false,
-    token: localStorage.getItem('Bearer') || null, // Retrieve token from localStorage
+    token: localStorage.getItem("authToken") || null, // Consistent token key
+    loginData: null,
   }),
 
   actions: {
@@ -39,44 +40,39 @@ export const useLoginStore = defineStore("Login", {
         }
 
         this.token = authResponse.data.Item1; // Store token in Pinia store
-        localStorage.setItem('authToken', this.token); // Persist token in localStorage
+        localStorage.setItem("authToken", this.token); // Persist token in localStorage
         console.log("Received Token:", this.token);
 
         // 🔹 Step 2: Use Token to Login
         const apiURL = `${companyStore.fullURL}/Login?Login=${this.username}&Password=${this.password}&Clientcode=${companyStore.companyCode}&Application=${companyStore.application}`;
 
         console.log("Logging in with Token:", apiURL);
-        console.log("Origin Url is:" + "http://appdemo.intelliob.com/webapi/api/Login?Login=5000&Password=1MqM5jFel6OUVDeOiSBIQA%3D%3D&Clientcode=305&Application=1");
 
-        const cookies = document.cookie;
         const loginResponse = await axios.get(apiURL, {
           headers: {
             Authorization: `Bearer ${this.token}`,
-            // 'Access-Control-Allow-Origin': '*',
           },
         });
 
+        this.loginData = loginResponse.data;
         console.log("Login response:", loginResponse.data);
 
-        if (loginResponse.data?.success) {
-          this.isAuthenticated = true;
-          console.log("Login successful!", loginResponse.data);
-        } else {
-          this.error = loginResponse.data?.message || "Invalid credentials";
+        if (this.loginData) {
+          this.isAuthenticated = true; // 🔥 Mark as authenticated
         }
+
       } catch (error) {
-        this.error = error.response?.data || error.message;
+        this.error = error.response?.data?.message || error.message || "An unknown error occurred.";
         console.error("Error during login:", this.error);
       } finally {
         this.loading = false;
       }
     },
 
-    // Optional: Logout and clear token from localStorage
     logout() {
       this.isAuthenticated = false;
       this.token = null;
-      localStorage.removeItem('authToken'); // Clear token from localStorage
+      localStorage.removeItem("authToken"); // Clear token from localStorage
       console.log("Logged out successfully");
     },
   },

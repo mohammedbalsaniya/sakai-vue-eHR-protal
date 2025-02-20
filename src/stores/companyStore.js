@@ -50,11 +50,15 @@ export const useCompanyStore = defineStore('company', {
 
           // ✅ Correct way to construct the full URL
           this.fullURL = `${this.protocol}://${this.baseURL}/webapi/api`;
+          //coverting to img into base64
+           this.companyLogo = `data:image/png;base64,${this.companyLogo}`;
+          // console.log('Company Name:', this.companyName);
 
-          console.log(`SSL is ${this.sslStatus === 1 ? 'enabled' : 'not enabled'}`);
-          console.log('Protocol:', this.protocol);
-          console.log('Full API URL:', this.fullURL);
-          console.log('Full applicationL:', this.application);
+          // console.log(`SSL is ${this.sslStatus === 1 ? 'enabled' : 'not enabled'}`);
+          // console.log('Protocol:', this.protocol);
+          // console.log('Full API URL:', this.fullURL);
+          // console.log('Full applicationL:', this.application);
+          // console.log('img', this.companyLogo);
         } else {
           this.error = "No data found for this company code";
         }
@@ -64,6 +68,6 @@ export const useCompanyStore = defineStore('company', {
       } finally {
         this.loading = false;
       }
-    }
+    },
   }
 });
